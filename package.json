@@ -1,0 +1,42 @@
+{
+  "name": "@ahf/community-translation-hub",
+  "version": "0.1.0",
+  "description": "A collaborative translation platform for educational content by Applied Humanity Foundation",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/ scripts/ tests/ --ext .ts",
+    "validate": "tsx scripts/validate-translations.ts",
+    "word-count": "tsx scripts/word-count.ts",
+    "export-pdf": "tsx scripts/export-pdf.ts"
+  },
+  "dependencies": {
+    "marked": "^12.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0",
+    "vite": "^5.2.0",
+    "vitest": "^1.4.0"
+  },
+  "author": "Applied Humanity Foundation",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/applied-humanity-foundation/community-translation-hub"
+  },
+  "keywords": [
+    "translation",
+    "education",
+    "open-source",
+    "multilingual",
+    "nonprofit"
+  ]
+}

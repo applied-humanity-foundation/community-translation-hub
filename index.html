@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Translation Hub — Applied Humanity Foundation</title>
+  <meta name="description" content="A collaborative platform for translating technology education materials into multiple languages. By Applied Humanity Foundation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* =============================================
+   RESET & BASE VARIABLES
+   ============================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-tertiary: #1a1a24;
+  --bg-card: #14141e;
+  --text-primary: #e8e8ed;
+  --text-secondary: #9d9daa;
+  --text-muted: #6b6b78;
+  --accent-blue: #2563eb;
+  --accent-teal: #0ea5e9;
+  --accent-gradient: linear-gradient(135deg, #2563eb, #0ea5e9);
+  --border-color: #2a2a36;
+  --border-hover: #3a3a4a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 24px rgba(0, 0, 0, .4);
+  --transition: all .3s cubic-bezier(.4, 0, .2, 1);
+  --font-main: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f5f5f8;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #eaeaef;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a2e;
+  --text-secondary: #555568;
+  --text-muted: #8888a0;
+  --border-color: #d8d8e2;
+  --border-hover: #c0c0d0;
+  --shadow: 0 4px 24px rgba(0, 0, 0, .08);
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+  transition: var(--transition);
+}
+
+a {
+  color: var(--accent-teal);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--accent-blue);
+}
+
+::selection {
+  background: rgba(37, 99, 235, .3);
+  color: #fff;
+}
+
+/* =============================================
+   ANIMATED BACKGROUND — floating symbols
+   ============================================= */
+.bg-symbols {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.bg-symbols span {
+  position: absolute;
+  font-size: 1.4rem;
+  color: rgba(37, 99, 235, .07);
+  animation: floatUp linear infinite;
+  will-change: transform, opacity;
+}
+
+[data-theme="light"] .bg-symbols span {
+  color: rgba(37, 99, 235, .05);
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* =============================================
+   NAVIGATION BAR
+   ============================================= */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10, 10, 15, .85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+[data-theme="light"] .nav {
+  background: rgba(255, 255, 255, .85);
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -.02em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  font-size: .875rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.nav-links a:hover {
+  color: var(--text-primary);
+}
+
+.nav-actions {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .85rem;
+  transition: var(--transition);
+}
+
+.btn-icon:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  background: rgba(37, 99, 235, .08);
+}
+
+.lang-toggle {
+  padding: 0 .75rem;
+  width: auto;
+  font-weight: 600;
+  font-size: .75rem;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text-secondary);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+/* =============================================
+   HERO SECTION
+   ============================================= */
+.hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6rem 2rem 4rem;
+  z-index: 1;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .4rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  font-size: .8rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  background: var(--bg-secondary);
+}
+
+.hero-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-teal);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .3; }
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -.03em;
+}
+
+.hero h1 .gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin-bottom: 2.5rem;
+  line-height: 1.8;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* =============================================
+   BUTTONS
+   ============================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .75rem 1.75rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: .95rem;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-main);
+}
+
+.btn-primary {
+  background: var(--accent-gradient);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, .3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, .4);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-teal);
+}
+
+/* =============================================
+   STATS SECTION
+   ============================================= */
+.stats {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: -3rem auto 0;
+  padding: 0 2rem;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(37, 99, 235, .12);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: .85rem;
+  color: var(--text-secondary);
+  margin-top: .25rem;
+}
+
+/* =============================================
+   SECTION COMMON STYLES
+   ============================================= */
+section {
+  position: relative;
+  z-index: 1;
+  padding: 5rem 2rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  margin-bottom: .75rem;
+  letter-spacing: -.02em;
+}
+
+.section-header p {
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+}
+
+/* =============================================
+   TRANSLATION INTERFACE — MAIN APP
+   ============================================= */
+.translation-section {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.translation-app {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-card);
+  min-height: 600px;
+  box-shadow: var(--shadow);
+}
+
+/* — Sidebar — */
+.doc-sidebar {
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  padding: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  padding: 0 1.25rem;
+  margin-bottom: .75rem;
+}
+
+.doc-list {
+  list-style: none;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.doc-item {
+  padding: .75rem 1.25rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: var(--transition);
+  font-size: .9rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.doc-item:hover {
+  background: rgba(37, 99, 235, .05);
+  color: var(--text-primary);
+}
+
+.doc-item.active {
+  border-left-color: var(--accent-blue);
+  background: rgba(37, 99, 235, .08);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.doc-item .doc-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem;
+  flex-shrink: 0;
+}
+
+.doc-item.active .doc-icon {
+  background: rgba(37, 99, 235, .15);
+}
+
+.doc-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.doc-item-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.doc-item-meta {
+  font-size: .7rem;
+  color: var(--text-muted);
+}
+
+/* — Toolbar — */
+.doc-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .75rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  flex-wrap: wrap;
+}
+
+.doc-toolbar-title {
+  font-weight: 600;
+  font-size: 1rem;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toolbar-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: .8rem;
+  color: var(--text-secondary);
+}
+
+.progress-mini {
+  width: 120px;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-mini-fill {
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: 999px;
+  transition: width .5s ease;
+}
+
+.btn-swap {
+  padding: .35rem .75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: .8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  transition: var(--transition);
+  font-family: var(--font-main);
+}
+
+.btn-swap:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-teal);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0 .6rem;
+  transition: var(--transition);
+}
+
+.search-box:focus-within {
+  border-color: var(--accent-blue);
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: .8rem;
+  padding: .35rem 0;
+  width: 140px;
+  outline: none;
+  font-family: var(--font-main);
+}
+
+.search-box input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-icon {
+  color: var(--text-muted);
+  font-size: .8rem;
+}
+
+/* — Content panes — */
+.doc-main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panes-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.pane {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 2rem;
+}
+
+.pane-left {
+  border-right: 1px solid var(--border-color);
+}
+
+.pane-header {
+  font-size: .7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.pane-header .lang-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.pane-header .lang-dot.en {
+  background: #2563eb;
+}
+
+.pane-header .lang-dot.zh {
+  background: #0ea5e9;
+}
+
+/* — Paragraph styling — */
+.para {
+  padding: .875rem 1rem;
+  margin-bottom: .75rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid transparent;
+  transition: background .25s ease, border-color .25s ease, color .25s ease;
+  cursor: default;
+  position: relative;
+  line-height: 1.85;
+  font-size: .925rem;
+  color: var(--text-secondary);
+}
+
+.para:hover,
+.para.highlight {
+  background: rgba(37, 99, 235, .06);
+  border-left-color: var(--accent-blue);
+  color: var(--text-primary);
+}
+
+.para.highlight {
+  background: rgba(14, 165, 233, .06);
+  border-left-color: var(--accent-teal);
+}
+
+.para .para-index {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  font-size: .65rem;
+  font-weight: 700;
+  margin-right: .5rem;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.para.highlight .para-index,
+.para:hover .para-index {
+  background: rgba(37, 99, 235, .15);
+  color: var(--accent-blue);
+}
+
+/* search highlight */
+.para.search-dim {
+  opacity: .2;
+}
+
+.para mark {
+  background: rgba(37, 99, 235, .25);
+  color: var(--text-primary);
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+/* — Mobile language toggle — */
+.mobile-lang-toggle {
+  display: none;
+  padding: .5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.mobile-lang-toggle button {
+  flex: 1;
+  padding: .5rem;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 500;
+  font-size: .85rem;
+  transition: var(--transition);
+}
+
+.mobile-lang-toggle button:first-child {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.mobile-lang-toggle button:last-child {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.mobile-lang-toggle button.active {
+  background: var(--accent-gradient);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* =============================================
+   PROGRESS DASHBOARD
+   ============================================= */
+.progress-section {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.progress-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  transition: var(--transition);
+}
+
+.progress-row:hover {
+  border-color: var(--accent-blue);
+  box-shadow: 0 4px 20px rgba(37, 99, 235, .08);
+}
+
+.progress-doc-icon {
+  font-size: 1.25rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  flex-shrink: 0;
+}
+
+.progress-doc-name {
+  width: 200px;
+  font-weight: 500;
+  font-size: .925rem;
+  flex-shrink: 0;
+}
+
+.progress-bar-wrap {
+  flex: 1;
+  height: 10px;
+  background: var(--bg-tertiary);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent-gradient);
+  transition: width 1s ease;
+}
+
+.progress-pct {
+  width: 48px;
+  text-align: right;
+  font-weight: 700;
+  font-size: .9rem;
+  color: var(--accent-teal);
+}
+
+/* =============================================
+   CONTRIBUTE SECTION
+   ============================================= */
+.contribute-section {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem;
+  transition: var(--transition);
+  position: relative;
+}
+
+.step-card:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(37, 99, 235, .1);
+}
+
+.step-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.step-card h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: .5rem;
+}
+
+.step-card p {
+  color: var(--text-secondary);
+  font-size: .9rem;
+  line-height: 1.7;
+}
+
+/* =============================================
+   ABOUT SECTION
+   ============================================= */
+.about-section {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.about-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  line-height: 1.9;
+}
+
+.about-content p {
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  font-size: 1.02rem;
+}
+
+.about-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border-color);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .85rem;
+}
+
+.footer a {
+  color: var(--text-secondary);
+}
+
+.footer a:hover {
+  color: var(--accent-teal);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* =============================================
+   SCROLL REVEAL ANIMATION
+   ============================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =============================================
+   MOBILE SIDEBAR TOGGLE BUTTON
+   ============================================= */
+.mobile-sidebar-btn {
+  display: none;
+  padding: .5rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: .8rem;
+  font-family: var(--font-main);
+  cursor: pointer;
+  margin-bottom: 1rem;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.mobile-sidebar-btn:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-teal);
+}
+
+/* =============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================= */
+@media (max-width: 900px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: -2rem;
+  }
+
+  .translation-app {
+    grid-template-columns: 1fr;
+  }
+
+  .doc-sidebar {
+    display: none;
+  }
+
+  .doc-sidebar.mobile-open {
+    display: flex;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    border-right: none;
+  }
+
+  .mobile-sidebar-btn {
+    display: block;
+  }
+
+  .panes-container {
+    flex-direction: column;
+  }
+
+  .pane-left {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .mobile-lang-toggle {
+    display: flex;
+  }
+
+  .pane.mobile-hidden {
+    display: none;
+  }
+
+  .progress-doc-name {
+    width: 140px;
+    font-size: .85rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links.mobile-open {
+    display: flex;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--bg-primary);
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+}
+
+@media (max-width: 600px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-content {
+    padding: 1.5rem;
+  }
+
+  .doc-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .5rem;
+  }
+
+  .pane {
+    padding: 1rem;
+  }
+
+  .progress-doc-icon {
+    display: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================================
+     ANIMATED BACKGROUND — floating translation symbols
+     ============================================ -->
+<div class="bg-symbols" id="bgSymbols"></div>
+
+<!-- ============================================
+     NAVIGATION
+     ============================================ -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">CTH</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#documents">Documents</a>
+    <a href="#about">About</a>
+    <a href="#contribute">Contribute</a>
+    <a href="https://github.com/applied-humanity-foundation/community-translation-hub" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-icon lang-toggle" id="uiLangToggle" title="Switch interface language">EN</button>
+    <button class="btn-icon" id="themeToggle" title="Toggle dark/light theme">&#9789;</button>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ============================================
+     HERO SECTION
+     ============================================ -->
+<header class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span> Open Source &middot; Community Driven
+  </div>
+  <h1>
+    Bridging Languages,<br>
+    <span class="gradient">Connecting Knowledge</span>
+  </h1>
+  <p id="heroDesc">Making technology education accessible across languages. An open-source collaborative platform where community translators help break language barriers in digital literacy.</p>
+  <div class="hero-cta">
+    <a href="#documents" class="btn btn-primary" id="heroCta">Browse Documents</a>
+    <a href="#contribute" class="btn btn-secondary" id="heroCtaSec">Start Contributing</a>
+  </div>
+</header>
+
+<!-- ============================================
+     STATS BAR
+     ============================================ -->
+<div class="stats reveal">
+  <div class="stat-card">
+    <div class="stat-number">5</div>
+    <div class="stat-label" data-i18n="stat-docs">Documents</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">2</div>
+    <div class="stat-label" data-i18n="stat-langs">Languages</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">100%</div>
+    <div class="stat-label" data-i18n="stat-open">Open Source</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">&infin;</div>
+    <div class="stat-label" data-i18n="stat-community">Community Driven</div>
+  </div>
+</div>
+
+<!-- ============================================
+     TRANSLATION INTERFACE
+     ============================================ -->
+<section id="documents">
+  <div class="section-header reveal">
+    <h2 data-i18n="docs-title">Translation Library</h2>
+    <p data-i18n="docs-subtitle">Read side-by-side bilingual content. Hover over any paragraph to see its translation highlighted.</p>
+  </div>
+
+  <div class="translation-section">
+    <!-- Mobile sidebar toggle -->
+    <button class="mobile-sidebar-btn" id="mobileSidebarBtn" data-i18n="mobile-sidebar-btn">Select Document</button>
+
+    <div class="translation-app reveal">
+      <!-- Left sidebar: document list -->
+      <aside class="doc-sidebar" id="docSidebar">
+        <div class="sidebar-title" data-i18n="sidebar-title">Documents</div>
+        <ul class="doc-list" id="docList"></ul>
+      </aside>
+
+      <!-- Main content area -->
+      <div class="doc-main">
+        <!-- Top toolbar -->
+        <div class="doc-toolbar">
+          <div class="doc-toolbar-title" id="toolbarTitle">Getting Started with Computers</div>
+          <div class="toolbar-meta">
+            <span id="wordCount">EN: 0 words</span>
+            <div class="progress-mini">
+              <div class="progress-mini-fill" id="progressMiniFill" style="width:100%"></div>
+            </div>
+            <button class="btn-swap" id="swapBtn" title="Swap language sides">&#8644; Swap</button>
+            <div class="search-box">
+              <span class="search-icon">&#128269;</span>
+              <input type="text" id="searchInput" placeholder="Search...">
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile language pane toggle -->
+        <div class="mobile-lang-toggle" id="mobileLangToggle">
+          <button class="active" data-lang="en">English</button>
+          <button data-lang="zh">中文</button>
+        </div>
+
+        <!-- Split panes -->
+        <div class="panes-container" id="panesContainer">
+          <div class="pane pane-left" id="paneLeft">
+            <div class="pane-header">
+              <span class="lang-dot en"></span>
+              <span id="paneLeftLabel">ENGLISH</span>
+            </div>
+            <div id="paneLeftContent"></div>
+          </div>
+          <div class="pane pane-right" id="paneRight">
+            <div class="pane-header">
+              <span class="lang-dot zh"></span>
+              <span id="paneRightLabel">中文</span>
+            </div>
+            <div id="paneRightContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     PROGRESS DASHBOARD
+     ============================================ -->
+<section id="progress">
+  <div class="section-header reveal">
+    <h2 data-i18n="progress-title">Translation Progress</h2>
+    <p data-i18n="progress-subtitle">Track the completion status of each document across all supported languages.</p>
+  </div>
+  <div class="progress-section">
+    <div class="progress-grid reveal" id="progressGrid"></div>
+  </div>
+</section>
+
+<!-- ============================================
+     HOW TO CONTRIBUTE
+     ============================================ -->
+<section id="contribute">
+  <div class="section-header reveal">
+    <h2 data-i18n="contrib-title">How to Contribute</h2>
+    <p data-i18n="contrib-subtitle">Join our community of translators and help make technology education accessible worldwide.</p>
+  </div>
+  <div class="contribute-section">
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3 data-i18n="step1-title">Fork the Repository</h3>
+        <p data-i18n="step1-desc">Create your own copy of the project on GitHub so you can make changes freely.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3 data-i18n="step2-title">Choose a Document</h3>
+        <p data-i18n="step2-desc">Pick an untranslated document or improve an existing translation that needs revision.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3 data-i18n="step3-title">Add Your Translation</h3>
+        <p data-i18n="step3-desc">Translate the content using clear, accessible language that beginners can understand.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3 data-i18n="step4-title">Submit a Pull Request</h3>
+        <p data-i18n="step4-desc">Send your work back for review. A native speaker will review and help refine it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     ABOUT
+     ============================================ -->
+<section id="about">
+  <div class="section-header reveal">
+    <h2 data-i18n="about-title">About the Foundation</h2>
+  </div>
+  <div class="about-section">
+    <div class="about-content reveal">
+      <p data-i18n="about-p1">The Community Translation Hub is a project of the <a href="https://appliedhumanityfoundation.org" target="_blank" rel="noopener">Applied Humanity Foundation</a>, a 501(c)(3) nonprofit organization based in Colorado. Our mission is to advance human well-being through responsible AI application, open-source tools, and digital literacy education.</p>
+      <p data-i18n="about-p2">We believe that language should never be a barrier to learning about technology. In a world increasingly shaped by digital tools and artificial intelligence, everyone deserves access to clear, accurate, and culturally sensitive educational materials in their own language.</p>
+      <p data-i18n="about-p3">This platform is built and maintained entirely by volunteers. All content is freely available under open licenses for use by individuals, educators, schools, libraries, and community organizations worldwide.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://appliedhumanityfoundation.org" target="_blank" rel="noopener">Applied Humanity Foundation</a>
+    <a href="https://github.com/applied-humanity-foundation/community-translation-hub" target="_blank" rel="noopener">GitHub</a>
+    <a href="#documents">Documents</a>
+  </div>
+  <p>Built with care by <a href="https://appliedhumanityfoundation.org" target="_blank" rel="noopener">Applied Humanity Foundation</a>. Content CC BY 4.0 &middot; Code MIT.</p>
+</footer>
+
+
+<!-- ============================================
+     JAVASCRIPT — Application Logic
+     ============================================ -->
+<script>
+/* ================================================================
+   DOCUMENT DATA
+   Real bilingual educational content — English with Chinese translations
+   ================================================================ */
+const documents = [
+  {
+    id: 'computers',
+    title: 'Getting Started with Computers',
+    titleZh: '计算机入门指南',
+    icon: '&#128187;',
+    progress: 100,
+    en: [
+      'A computer is an electronic device that processes information according to a set of instructions called a program. At its core, every computer has a central processing unit (CPU) that performs calculations, memory (RAM) that temporarily stores data being worked on, and storage (such as a hard drive or solid-state drive) that keeps your files and programs even when the computer is turned off. Understanding these basic components helps you make sense of how your computer works and what to look for when buying or upgrading one.',
+      'Operating systems are the foundational software that manage your computer\'s hardware and provide a platform for running applications. The three most common operating systems for personal computers are Windows, macOS, and Linux. Windows is widely used in business and personal computing; macOS is designed for Apple\'s Mac computers and is popular among creative professionals; Linux is free, open-source, and favored by developers and tech enthusiasts. Each has its own strengths, and the best choice depends on your needs and preferences.',
+      'Files and folders are the basic way computers organize information. Think of your computer\'s storage as a filing cabinet: folders are like drawers that group related items together, and files are the individual documents inside. Common file types include text documents, images, videos, and spreadsheets. Learning to create, rename, move, and delete files and folders is one of the most important basic skills for using a computer efficiently.',
+      'Connecting to the internet opens up a world of information and communication. Most computers connect via Wi-Fi (wireless) or Ethernet (wired cable). Once connected, you use a web browser such as Chrome, Firefox, or Safari to visit websites, search for information, watch videos, and communicate with others through email or messaging. Understanding how to connect safely and recognize trustworthy websites is essential in today\'s digital world.',
+      'Keeping your computer healthy requires a few regular habits. Install software updates when they become available, as they often fix security vulnerabilities and improve performance. Use antivirus software to protect against malicious programs. Back up your important files regularly to an external drive or cloud storage service so you do not lose them if something goes wrong. Finally, restart your computer periodically to clear temporary files and keep it running smoothly.'
+    ],
+    zh: [
+      '计算机是一种按照程序指令处理信息的电子设备。每台计算机的核心都包含中央处理器（CPU），负责执行运算；内存（RAM），用于临时存储正在处理的数据；以及存储设备（如硬盘或固态硬盘），即使在关机后也能保存文件和程序。了解这些基本组件，有助于你理解计算机的工作原理，也能帮助你在购买或升级计算机时做出更明智的选择。',
+      '操作系统是管理计算机硬件并为应用程序提供运行平台的基础软件。个人计算机上最常见的三种操作系统是 Windows、macOS 和 Linux。Windows 广泛应用于商业和个人计算领域；macOS 专为苹果 Mac 电脑设计，深受创意工作者的喜爱；Linux 是免费的开源系统，受到开发人员和技术爱好者的青睐。每种系统都有各自的优势，最佳选择取决于你的需求和偏好。',
+      '文件和文件夹是计算机组织信息的基本方式。你可以把计算机的存储想象成一个文件柜：文件夹就像抽屉，将相关的内容分组存放；文件则是抽屉里的各个文档。常见的文件类型包括文本文档、图片、视频和电子表格。学会创建、重命名、移动和删除文件及文件夹，是高效使用计算机最重要的基础技能之一。',
+      '连接互联网可以让你获取海量信息并与他人交流。大多数计算机通过 Wi-Fi（无线）或以太网（有线）连接上网。连接后，你可以使用 Chrome、Firefox 或 Safari 等网页浏览器来访问网站、搜索信息、观看视频，以及通过电子邮件或即时通讯工具与他人沟通。学会安全地连接网络并识别可信赖的网站，是当今数字时代的必备技能。',
+      '保持计算机的良好状态需要养成一些日常习惯。当软件更新可用时及时安装，因为更新通常会修复安全漏洞并提升性能。使用杀毒软件防范恶意程序。定期将重要文件备份到外置硬盘或云存储服务中，以防意外丢失。最后，定期重启计算机以清除临时文件，保持系统流畅运行。'
+    ]
+  },
+  {
+    id: 'safety',
+    title: 'Internet Safety Guide',
+    titleZh: '互联网安全指南',
+    icon: '&#128274;',
+    progress: 100,
+    en: [
+      'The internet is a powerful tool, but using it safely requires awareness and good habits. Cyber threats such as phishing, malware, and identity theft are real risks that affect millions of people every year. Phishing attacks typically arrive as deceptive emails or messages designed to trick you into revealing passwords, credit card numbers, or other sensitive information. Learning to recognize these threats is the first step toward protecting yourself online.',
+      'Strong passwords are your first line of defense against unauthorized access to your accounts. A good password should be at least twelve characters long and include a mix of uppercase letters, lowercase letters, numbers, and special symbols. Avoid using easily guessable information like your birthday, pet\'s name, or common words. Consider using a password manager application, which can generate and securely store unique passwords for each of your accounts so you do not have to remember them all.',
+      'Two-factor authentication (2FA) adds an extra layer of security beyond your password. When 2FA is enabled, logging in requires both your password and a second verification step, such as a code sent to your phone or generated by an authenticator app. Even if someone steals your password, they cannot access your account without the second factor. Enable 2FA on all accounts that support it, especially email, banking, and social media.',
+      'Be cautious about the information you share online. Social media posts, forum comments, and public profiles can reveal more about you than you realize. Scammers and malicious actors can piece together personal details to impersonate you or answer your security questions. Review the privacy settings on your social media accounts regularly, and think carefully before sharing your location, workplace, daily routines, or personal photographs with a wide audience.',
+      'When browsing the web, look for signs that a website is secure before entering any personal information. Check that the URL begins with "https://" (the "s" stands for secure) and look for a padlock icon in the browser\'s address bar. Be wary of websites with misspelled domain names or unusual addresses, as these may be fraudulent sites designed to steal your data. When in doubt, navigate directly to a website by typing its address rather than clicking links in emails or messages.'
+    ],
+    zh: [
+      '互联网是一项强大的工具，但安全使用它需要保持警惕并养成良好的习惯。网络钓鱼、恶意软件和身份盗窃等网络威胁是真实存在的风险，每年影响数百万人。网络钓鱼攻击通常以伪装的电子邮件或消息的形式出现，目的是诱骗你泄露密码、信用卡号或其他敏感信息。学会识别这些威胁，是保护自身网络安全的第一步。',
+      '强密码是防止他人未经授权访问你账户的第一道防线。一个好的密码应当至少包含十二个字符，并混合使用大写字母、小写字母、数字和特殊符号。避免使用容易被猜到的信息，比如生日、宠物名字或常见词汇。建议使用密码管理器应用程序，它可以为你的每个账户生成并安全存储独一无二的密码，这样你就不必全部记住它们。',
+      '双重认证（2FA）在密码之外增加了一层额外的安全保障。启用双重认证后，登录时不仅需要输入密码，还需要完成第二步验证，例如输入发送到手机上的验证码，或使用认证器应用生成的动态码。即使有人窃取了你的密码，没有第二重验证也无法进入你的账户。请在所有支持双重认证的账户上启用此功能，尤其是电子邮箱、银行和社交媒体账户。',
+      '在网上分享信息时要保持谨慎。社交媒体帖子、论坛评论和公开的个人资料可能会比你意识到的透露更多的个人信息。不法分子可以将零散的个人细节拼凑起来，冒充你的身份或回答你的安全问题。定期检查社交媒体账户的隐私设置，在向公众分享你的位置、工作单位、日常习惯或个人照片之前，请三思而后行。',
+      '浏览网页时，在输入任何个人信息之前，请先确认网站是否安全。检查网址是否以 "https://" 开头（其中 "s" 代表安全），并查看浏览器地址栏中是否有锁形图标。对于域名拼写错误或地址异常的网站要保持警惕，因为这些可能是窃取你数据的欺诈网站。如有疑问，请直接在地址栏中输入网站地址访问，而不要点击电子邮件或消息中的链接。'
+    ]
+  },
+  {
+    id: 'ai',
+    title: 'Introduction to AI',
+    titleZh: '人工智能简介',
+    icon: '&#129302;',
+    progress: 100,
+    en: [
+      'Artificial intelligence (AI) refers to computer systems designed to perform tasks that typically require human intelligence, such as understanding language, recognizing images, making decisions, and learning from experience. While the concept of AI has been around since the 1950s, recent advances in computing power and the availability of vast amounts of data have led to dramatic breakthroughs. Today, AI powers everything from voice assistants on your phone to medical diagnosis tools and self-driving vehicle technology.',
+      'Machine learning is the branch of AI that enables computers to learn and improve from data without being explicitly programmed for every scenario. Instead of writing step-by-step rules, engineers feed large datasets to algorithms that identify patterns and relationships on their own. For example, a machine learning model trained on thousands of photographs can learn to distinguish between cats and dogs by recognizing features such as ear shape, fur texture, and body proportions.',
+      'Large language models (LLMs) are a type of AI trained on enormous amounts of text from books, websites, and other written sources. These models learn the statistical patterns of language, which enables them to generate coherent text, answer questions, translate between languages, summarize documents, and assist with writing tasks. While LLMs are remarkably capable, it is important to remember that they work by predicting likely word sequences rather than truly understanding meaning the way humans do.',
+      'AI brings significant benefits to society but also raises important concerns. On the positive side, AI can accelerate scientific research, improve healthcare diagnostics, enhance accessibility for people with disabilities, and automate repetitive tasks, freeing humans to focus on creative and strategic work. However, concerns include potential job displacement, algorithmic bias that can reinforce existing inequalities, privacy implications from large-scale data collection, and the environmental cost of training large AI models.',
+      'Using AI responsibly means being an informed and critical user. When you interact with AI-generated content, consider the source, check facts independently, and be aware that AI can produce plausible-sounding but inaccurate information. Support organizations that advocate for transparent, fair, and accountable AI development. As AI becomes more integrated into daily life, digital literacy that includes understanding AI capabilities and limitations will be just as important as knowing how to use a computer or navigate the internet.'
+    ],
+    zh: [
+      '人工智能（AI）是指旨在执行通常需要人类智能的任务的计算机系统，这些任务包括理解语言、识别图像、做出决策和从经验中学习。虽然人工智能的概念早在20世纪50年代就已提出，但近年来计算能力的提升和海量数据的出现带来了重大突破。如今，从手机上的语音助手到医疗诊断工具和自动驾驶技术，人工智能的应用无处不在。',
+      '机器学习是人工智能的一个分支，它使计算机能够从数据中学习和改进，而无需针对每种情况进行显式编程。工程师不需要编写逐步的规则，而是将大量数据集提供给算法，让算法自行识别其中的模式和关联。例如，一个使用数千张照片训练的机器学习模型，能够通过识别耳朵形状、毛发质地和身体比例等特征来区分猫和狗。',
+      '大型语言模型（LLM）是一种在海量文本数据上训练的人工智能，这些文本来源于书籍、网站和其他书面材料。这类模型学习语言的统计规律，从而能够生成连贯的文本、回答问题、进行语言翻译、概括文档内容以及辅助写作任务。尽管大型语言模型的能力令人瞩目，但需要记住的是，它们的工作方式是预测可能的词语序列，而并非像人类那样真正理解语义。',
+      '人工智能为社会带来了巨大的益处，但同时也引发了一些重要的关切。从积极的方面来看，AI 可以加速科学研究、改善医疗诊断、增强残障人士的无障碍体验，并自动化重复性工作，让人类能够专注于创造性和战略性的工作。然而，令人担忧的问题也不容忽视，包括可能造成的就业替代、可能加剧现有不平等的算法偏见、大规模数据收集带来的隐私问题，以及训练大型 AI 模型所需的环境成本。',
+      '负责任地使用人工智能意味着做一个知情且具有批判性思维的用户。当你接触 AI 生成的内容时，要考虑信息来源，独立核实事实，并意识到 AI 可能产生听起来合理但实际上不准确的信息。支持那些倡导透明、公平和负责任的 AI 发展的组织。随着人工智能越来越深入地融入日常生活，包含理解 AI 能力与局限性在内的数字素养，将变得与掌握计算机操作和互联网使用同等重要。'
+    ]
+  },
+  {
+    id: 'privacy',
+    title: 'Data Privacy Basics',
+    titleZh: '数据隐私基础',
+    icon: '&#128737;',
+    progress: 100,
+    en: [
+      'Data privacy refers to the right of individuals to control how their personal information is collected, used, and shared. In the digital age, nearly every online activity generates data: the websites you visit, the searches you make, the products you buy, and even your physical location through your mobile device. Companies collect this data to personalize services, target advertisements, and improve their products, but this collection often happens without your full awareness or meaningful consent.',
+      'Personal data comes in many forms. Obvious examples include your name, email address, phone number, and date of birth. But digital data also encompasses your browsing history, purchase records, social media activity, IP address, device information, and biometric data such as fingerprints or facial recognition profiles. When combined, these data points can create a remarkably detailed profile of your habits, preferences, relationships, and daily movements.',
+      'Several major laws around the world aim to protect data privacy. The European Union\'s General Data Protection Regulation (GDPR) gives individuals the right to access, correct, and delete their personal data, and requires companies to obtain clear consent before collecting it. China\'s Personal Information Protection Law (PIPL) similarly establishes strict rules for data processing. In the United States, privacy laws vary by state, with California\'s Consumer Privacy Act (CCPA) being one of the most comprehensive.',
+      'You can take practical steps to protect your own data privacy. Review and adjust privacy settings on your devices, apps, and online accounts. Use a privacy-focused web browser or browser extensions that block trackers. Be selective about which apps you install and what permissions you grant them. Read privacy policies before signing up for services, paying attention to what data is collected and whether it is shared with third parties. Consider using a virtual private network (VPN) when connecting to public Wi-Fi networks.',
+      'Data privacy is not just an individual concern but a collective one. When personal data is misused, it can lead to discrimination, manipulation, surveillance, and erosion of democratic freedoms. Supporting strong privacy laws, holding companies accountable for data breaches, and educating others about privacy rights are all ways to contribute to a safer digital environment for everyone. Privacy is a fundamental right, and protecting it requires both personal vigilance and systemic change.'
+    ],
+    zh: [
+      '数据隐私是指个人控制其个人信息如何被收集、使用和共享的权利。在数字时代，几乎每一项在线活动都会产生数据：你访问的网站、进行的搜索、购买的商品，甚至通过移动设备记录的地理位置。企业收集这些数据用于个性化服务、精准投放广告和改进产品，但这种收集往往在你并不完全知情或未真正同意的情况下发生。',
+      '个人数据有多种形式。显而易见的例子包括你的姓名、电子邮件地址、电话号码和出生日期。但数字数据还涵盖你的浏览历史、购买记录、社交媒体活动、IP 地址、设备信息，以及指纹或面部识别等生物特征数据。当这些数据被整合在一起时，可以构建出一幅关于你的习惯、偏好、人际关系和日常行踪的极为详细的画像。',
+      '世界各地已有多部重要的法律旨在保护数据隐私。欧盟的《通用数据保护条例》（GDPR）赋予个人访问、更正和删除其个人数据的权利，并要求企业在收集数据前获得明确的同意。中国的《个人信息保护法》同样对数据处理制定了严格的规范。在美国，各州的隐私法律各有不同，其中加利福尼亚州的《消费者隐私法案》（CCPA）是最全面的法规之一。',
+      '你可以采取一些实际步骤来保护自己的数据隐私。检查并调整设备、应用程序和在线账户中的隐私设置。使用注重隐私保护的浏览器或安装能够屏蔽追踪器的浏览器扩展。谨慎选择安装的应用程序以及授予它们的权限。在注册服务之前阅读隐私政策，注意了解哪些数据会被收集，以及是否会与第三方共享。在连接公共 Wi-Fi 网络时，考虑使用虚拟专用网络（VPN）。',
+      '数据隐私不仅仅是个人的事，也是一个集体议题。当个人数据被滥用时，可能导致歧视、操控、监控，以及对民主自由的侵蚀。支持有力的隐私法律、追究企业数据泄露的责任、向他人普及隐私权知识，这些都是为构建更安全的数字环境做出贡献的方式。隐私是一项基本权利，保护它既需要个人的警觉，也需要制度层面的变革。'
+    ]
+  },
+  {
+    id: 'opensource',
+    title: 'Open Source Explained',
+    titleZh: '开源软件详解',
+    icon: '&#128300;',
+    progress: 100,
+    en: [
+      'Open source software is software whose source code is made freely available for anyone to view, modify, and distribute. Unlike proprietary software, which keeps its code secret and restricts how it can be used, open source projects invite collaboration from developers around the world. Some of the most important software you use every day is open source, including the Linux operating system that powers most of the world\'s servers, the Firefox web browser, and the Android mobile operating system.',
+      'The open source model works because of community collaboration. Developers contribute their time and expertise to projects they care about, often volunteering alongside their regular jobs. Changes to the code are reviewed by other community members before being accepted, creating a system of peer review that helps catch bugs and improve quality. This collaborative process often produces software that is more reliable and secure than proprietary alternatives, because thousands of eyes can examine the code for problems.',
+      'Open source licenses define the rules for using, modifying, and sharing the software. Common licenses include the MIT License, which allows almost unrestricted use; the GNU General Public License (GPL), which requires that modified versions also be open source; and the Apache License, which includes protections related to patents. Understanding these licenses is important whether you are a developer contributing to projects or a user choosing software for your organization.',
+      'Contributing to open source is one of the best ways to learn software development and build a professional portfolio. Beginners can start by fixing documentation errors, reporting bugs, or translating interface text into other languages. As skills grow, contributors can tackle more complex tasks such as adding features or reviewing others\' code. Many successful software engineers credit their open source contributions as a key factor in their career development, and companies increasingly value this experience when hiring.',
+      'The open source philosophy extends beyond software. The same principles of transparency, collaboration, and shared knowledge are applied to open hardware designs, open educational resources, open data initiatives, and open science. By making knowledge freely available and inviting broad participation, the open source movement demonstrates that cooperation can drive innovation more effectively than competition alone. It represents a fundamental belief that shared knowledge benefits everyone.'
+    ],
+    zh: [
+      '开源软件是指其源代码对任何人免费公开，允许查看、修改和分发的软件。与封闭源代码、限制使用方式的专有软件不同，开源项目邀请世界各地的开发者共同协作。你每天使用的许多重要软件都是开源的，包括驱动全球大多数服务器的 Linux 操作系统、Firefox 浏览器以及 Android 移动操作系统。',
+      '开源模式之所以能够运作，是因为社区协作的力量。开发者们将自己的时间和专业知识贡献给他们关心的项目，往往是在正式工作之余以志愿者身份参与。代码的修改在被接受之前会经过其他社区成员的审查，形成一种同行评审机制，有助于发现错误并提升质量。这种协作过程往往能产出比专有软件更可靠、更安全的成果，因为有成千上万双眼睛在检查代码中的问题。',
+      '开源许可证定义了使用、修改和共享软件的规则。常见的许可证包括：MIT 许可证，允许几乎不受限制的使用；GNU 通用公共许可证（GPL），要求修改后的版本也必须开源；以及 Apache 许可证，其中包含与专利相关的保护条款。无论你是参与项目贡献的开发者，还是为组织选择软件的用户，了解这些许可证都很重要。',
+      '参与开源项目是学习软件开发和积累职业作品集的最佳途径之一。初学者可以从修正文档错误、报告程序缺陷或将界面文本翻译成其他语言开始。随着技能的提升，贡献者可以承担更复杂的任务，例如添加新功能或审查他人的代码。许多成功的软件工程师将开源贡献视为职业发展的关键因素，而企业在招聘时也越来越重视这方面的经验。',
+      '开源理念已经超越了软件的范畴。透明、协作和知识共享的原则同样被应用于开放硬件设计、开放教育资源、开放数据计划和开放科学。通过让知识自由获取并邀请广泛参与，开源运动证明了合作能够比单纯的竞争更有效地推动创新。它代表着一种根本的信念：共享知识惠及所有人。'
+    ]
+  }
+];
+
+/* ================================================================
+   UI LANGUAGE STRINGS — English and Chinese interface text
+   ================================================================ */
+const i18n = {
+  en: {
+    'stat-docs': 'Documents',
+    'stat-langs': 'Languages',
+    'stat-open': 'Open Source',
+    'stat-community': 'Community Driven',
+    'docs-title': 'Translation Library',
+    'docs-subtitle': 'Read side-by-side bilingual content. Hover over any paragraph to see its translation highlighted.',
+    'sidebar-title': 'Documents',
+    'mobile-sidebar-btn': 'Select Document',
+    'progress-title': 'Translation Progress',
+    'progress-subtitle': 'Track the completion status of each document across all supported languages.',
+    'contrib-title': 'How to Contribute',
+    'contrib-subtitle': 'Join our community of translators and help make technology education accessible worldwide.',
+    'step1-title': 'Fork the Repository',
+    'step1-desc': 'Create your own copy of the project on GitHub so you can make changes freely.',
+    'step2-title': 'Choose a Document',
+    'step2-desc': 'Pick an untranslated document or improve an existing translation that needs revision.',
+    'step3-title': 'Add Your Translation',
+    'step3-desc': 'Translate the content using clear, accessible language that beginners can understand.',
+    'step4-title': 'Submit a Pull Request',
+    'step4-desc': 'Send your work back for review. A native speaker will review and help refine it.',
+    'about-title': 'About the Foundation',
+    'about-p1': 'The Community Translation Hub is a project of the <a href="https://appliedhumanityfoundation.org" target="_blank" rel="noopener">Applied Humanity Foundation</a>, a 501(c)(3) nonprofit organization based in Colorado. Our mission is to advance human well-being through responsible AI application, open-source tools, and digital literacy education.',
+    'about-p2': 'We believe that language should never be a barrier to learning about technology. In a world increasingly shaped by digital tools and artificial intelligence, everyone deserves access to clear, accurate, and culturally sensitive educational materials in their own language.',
+    'about-p3': 'This platform is built and maintained entirely by volunteers. All content is freely available under open licenses for use by individuals, educators, schools, libraries, and community organizations worldwide.',
+    'heroDesc': 'Making technology education accessible across languages. An open-source collaborative platform where community translators help break language barriers in digital literacy.',
+    'heroCta': 'Browse Documents',
+    'heroCtaSec': 'Start Contributing'
+  },
+  zh: {
+    'stat-docs': '篇文档',
+    'stat-langs': '种语言',
+    'stat-open': '完全开源',
+    'stat-community': '社区驱动',
+    'docs-title': '翻译文库',
+    'docs-subtitle': '并排阅读双语内容。将鼠标悬停在任意段落上，即可高亮显示对应的译文。',
+    'sidebar-title': '文档列表',
+    'mobile-sidebar-btn': '选择文档',
+    'progress-title': '翻译进度',
+    'progress-subtitle': '追踪每篇文档在所有支持语言中的翻译完成状态。',
+    'contrib-title': '如何参与贡献',
+    'contrib-subtitle': '加入我们的翻译社区，帮助全世界的人获取科技教育资源。',
+    'step1-title': 'Fork 代码仓库',
+    'step1-desc': '在 GitHub 上创建项目的个人副本，以便你可以自由地进行修改。',
+    'step2-title': '选择一篇文档',
+    'step2-desc': '挑选一篇尚未翻译的文档，或改进需要修订的现有翻译。',
+    'step3-title': '添加你的翻译',
+    'step3-desc': '使用清晰、易懂的语言进行翻译，确保初学者也能理解。',
+    'step4-title': '提交 Pull Request',
+    'step4-desc': '将你的成果提交审核。母语使用者将协助审阅和完善翻译。',
+    'about-title': '关于基金会',
+    'about-p1': '社区翻译中心是 <a href="https://appliedhumanityfoundation.org" target="_blank" rel="noopener">Applied Humanity Foundation</a>（应用人道主义基金会）的项目，该基金会是一家位于科罗拉多州的 501(c)(3) 非营利组织。我们的使命是通过负责任的人工智能应用、开源工具和数字素养教育来促进人类福祉。',
+    'about-p2': '我们相信语言绝不应成为学习科技知识的障碍。在一个日益被数字工具和人工智能所塑造的世界中，每个人都应该能够用自己的语言获取清晰、准确且具有文化敏感性的教育材料。',
+    'about-p3': '这个平台完全由志愿者搭建和维护。所有内容均以开放许可的方式免费提供，供全世界的个人、教育工作者、学校、图书馆和社区组织使用。',
+    'heroDesc': '让科技教育跨越语言的藩篱。一个开源协作平台，社区翻译者在这里共同打破数字素养的语言壁垒。',
+    'heroCta': '浏览文档',
+    'heroCtaSec': '开始贡献'
+  }
+};
+
+/* ================================================================
+   APPLICATION STATE
+   ================================================================ */
+let currentDocIndex = 0;
+let swapped = false;
+let uiLang = 'en';
+let mobileActiveLang = 'en';
+
+/* ================================================================
+   INITIALIZATION
+   ================================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  createBackground();
+  buildSidebar();
+  buildProgressGrid();
+  loadDocument(0);
+  initScrollReveal();
+  bindEvents();
+});
+
+/* ================================================================
+   ANIMATED BACKGROUND — floating translation symbols
+   ================================================================ */
+function createBackground() {
+  const symbols = [
+    'A', '文', 'B', '字', 'C', '语', 'D', '言', 'E', '译',
+    'F', '翻', '中', 'EN', 'ZH', '词', '句', 'abc', '你',
+    '好', 'Hi', '世', '界', '学', '知', '识'
+  ];
+  const container = document.getElementById('bgSymbols');
+  for (let i = 0; i < 35; i++) {
+    const span = document.createElement('span');
+    span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    span.style.left = Math.random() * 100 + '%';
+    span.style.animationDuration = (18 + Math.random() * 25) + 's';
+    span.style.animationDelay = Math.random() * 20 + 's';
+    span.style.fontSize = (0.9 + Math.random() * 1.2) + 'rem';
+    container.appendChild(span);
+  }
+}
+
+/* ================================================================
+   SIDEBAR — Document list
+   ================================================================ */
+function buildSidebar() {
+  const list = document.getElementById('docList');
+  list.innerHTML = '';
+  documents.forEach((doc, i) => {
+    const li = document.createElement('li');
+    li.className = 'doc-item' + (i === currentDocIndex ? ' active' : '');
+    const title = uiLang === 'zh' ? doc.titleZh : doc.title;
+    li.innerHTML =
+      '<span class="doc-icon">' + doc.icon + '</span>' +
+      '<span class="doc-item-info">' +
+        '<span class="doc-item-title">' + title + '</span>' +
+        '<span class="doc-item-meta">' + doc.en.length + ' paragraphs &middot; ' + doc.progress + '%</span>' +
+      '</span>';
+    li.addEventListener('click', () => {
+      loadDocument(i);
+      // Close mobile sidebar after selection
+      document.getElementById('docSidebar').classList.remove('mobile-open');
+    });
+    list.appendChild(li);
+  });
+}
+
+/* ================================================================
+   LOAD DOCUMENT — Populate the split panes
+   ================================================================ */
+function loadDocument(index) {
+  currentDocIndex = index;
+  const doc = documents[index];
+
+  // Update sidebar active state
+  document.querySelectorAll('.doc-item').forEach((el, i) => {
+    el.classList.toggle('active', i === index);
+  });
+
+  // Update toolbar info
+  document.getElementById('toolbarTitle').textContent =
+    uiLang === 'zh' ? doc.titleZh : doc.title;
+
+  const totalWords = doc.en.join(' ').split(/\s+/).length;
+  document.getElementById('wordCount').textContent = 'EN: ' + totalWords + ' words';
+  document.getElementById('progressMiniFill').style.width = doc.progress + '%';
+
+  // Determine which language goes on which side
+  const leftData  = swapped ? doc.zh : doc.en;
+  const rightData = swapped ? doc.en : doc.zh;
+  const leftLang  = swapped ? 'zh' : 'en';
+  const rightLang = swapped ? 'en' : 'zh';
+
+  // Update pane labels
+  document.getElementById('paneLeftLabel').textContent = swapped ? '中文' : 'ENGLISH';
+  document.getElementById('paneRightLabel').textContent = swapped ? 'ENGLISH' : '中文';
+
+  // Update lang dot classes
+  document.querySelector('#paneLeft .lang-dot').className = 'lang-dot ' + leftLang;
+  document.querySelector('#paneRight .lang-dot').className = 'lang-dot ' + rightLang;
+
+  // Render paragraphs into each pane
+  renderParagraphs('paneLeftContent', leftData, 'left');
+  renderParagraphs('paneRightContent', rightData, 'right');
+
+  // Clear search
+  document.getElementById('searchInput').value = '';
+
+  // Scroll panes back to top
+  document.getElementById('paneLeft').scrollTop = 0;
+  document.getElementById('paneRight').scrollTop = 0;
+}
+
+/* ================================================================
+   RENDER PARAGRAPHS — Build paragraph elements with hover events
+   ================================================================ */
+function renderParagraphs(containerId, paragraphs, side) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  paragraphs.forEach((text, i) => {
+    const div = document.createElement('div');
+    div.className = 'para';
+    div.dataset.index = i;
+    div.dataset.side = side;
+
+    // Paragraph number badge + text
+    const badge = document.createElement('span');
+    badge.className = 'para-index';
+    badge.textContent = i + 1;
+    div.appendChild(badge);
+
+    const span = document.createElement('span');
+    span.textContent = text;
+    div.appendChild(span);
+
+    // Hover events for cross-pane highlighting
+    div.addEventListener('mouseenter', () => highlightPair(i, true));
+    div.addEventListener('mouseleave', () => highlightPair(i, false));
+
+    container.appendChild(div);
+  });
+}
+
+/* ================================================================
+   HIGHLIGHT PAIR — Light up matching paragraphs on both sides
+   ================================================================ */
+function highlightPair(index, active) {
+  document.querySelectorAll('.para[data-index="' + index + '"]').forEach(el => {
+    el.classList.toggle('highlight', active);
+  });
+
+  // Scroll the opposite pane to keep the highlighted paragraph visible
+  if (active) {
+    ['paneLeftContent', 'paneRightContent'].forEach(paneId => {
+      const target = document.querySelector('#' + paneId + ' .para[data-index="' + index + '"]');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+}
+
+/* ================================================================
+   PROGRESS GRID — Visual dashboard of translation completion
+   ================================================================ */
+function buildProgressGrid() {
+  const grid = document.getElementById('progressGrid');
+  grid.innerHTML = '';
+
+  documents.forEach(doc => {
+    const row = document.createElement('div');
+    row.className = 'progress-row';
+    const title = uiLang === 'zh' ? doc.titleZh : doc.title;
+    row.innerHTML =
+      '<div class="progress-doc-icon">' + doc.icon + '</div>' +
+      '<div class="progress-doc-name">' + title + '</div>' +
+      '<div class="progress-bar-wrap">' +
+        '<div class="progress-bar-fill" style="width:0%"></div>' +
+      '</div>' +
+      '<div class="progress-pct">' + doc.progress + '%</div>';
+    grid.appendChild(row);
+  });
+
+  // Animate the progress bars in after a short delay
+  setTimeout(() => {
+    grid.querySelectorAll('.progress-bar-fill').forEach((bar, i) => {
+      bar.style.width = documents[i].progress + '%';
+    });
+  }, 400);
+}
+
+/* ================================================================
+   SCROLL REVEAL — IntersectionObserver for entrance animations
+   ================================================================ */
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+/* ================================================================
+   EVENT BINDINGS — All interactive controls
+   ================================================================ */
+function bindEvents() {
+
+  /* ---- Theme toggle (dark/light) ---- */
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('themeToggle').innerHTML = isDark ? '&#9788;' : '&#9789;';
+  });
+
+  /* ---- Swap language sides ---- */
+  document.getElementById('swapBtn').addEventListener('click', () => {
+    swapped = !swapped;
+    loadDocument(currentDocIndex);
+  });
+
+  /* ---- Search within current document ---- */
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    document.querySelectorAll('.para').forEach(el => {
+      if (!query) {
+        el.classList.remove('search-dim');
+        // Remove any <mark> highlights
+        const span = el.querySelector('span:last-child');
+        if (span) span.innerHTML = span.textContent;
+        return;
+      }
+      const text = el.textContent.toLowerCase();
+      if (text.includes(query)) {
+        el.classList.remove('search-dim');
+        // Highlight matching text
+        const span = el.querySelector('span:last-child');
+        if (span) {
+          const raw = span.textContent;
+          const regex = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+          span.innerHTML = raw.replace(regex, '<mark>$1</mark>');
+        }
+      } else {
+        el.classList.add('search-dim');
+        const span = el.querySelector('span:last-child');
+        if (span) span.innerHTML = span.textContent;
+      }
+    });
+  });
+
+  /* ---- UI language toggle (EN/ZH interface) ---- */
+  document.getElementById('uiLangToggle').addEventListener('click', () => {
+    uiLang = uiLang === 'en' ? 'zh' : 'en';
+    document.getElementById('uiLangToggle').textContent = uiLang.toUpperCase();
+    document.documentElement.lang = uiLang;
+    applyI18n();
+    buildSidebar();
+    buildProgressGrid();
+    loadDocument(currentDocIndex);
+  });
+
+  /* ---- Mobile hamburger menu ---- */
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('mobile-open');
+  });
+
+  /* ---- Mobile sidebar button ---- */
+  document.getElementById('mobileSidebarBtn').addEventListener('click', () => {
+    document.getElementById('docSidebar').classList.toggle('mobile-open');
+  });
+
+  /* ---- Mobile pane language toggle ---- */
+  document.querySelectorAll('#mobileLangToggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      mobileActiveLang = btn.dataset.lang;
+
+      // Update button states
+      document.querySelectorAll('#mobileLangToggle button').forEach(b => {
+        b.classList.remove('active');
+      });
+      btn.classList.add('active');
+
+      // Show/hide panes
+      const paneLeft = document.getElementById('paneLeft');
+      const paneRight = document.getElementById('paneRight');
+      const leftIsEn = !swapped;
+
+      if ((mobileActiveLang === 'en' && leftIsEn) || (mobileActiveLang === 'zh' && !leftIsEn)) {
+        paneLeft.classList.remove('mobile-hidden');
+        paneRight.classList.add('mobile-hidden');
+      } else {
+        paneRight.classList.remove('mobile-hidden');
+        paneLeft.classList.add('mobile-hidden');
+      }
+    });
+  });
+
+  /* ---- Close mobile nav when clicking a link ---- */
+  document.querySelectorAll('#navLinks a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('mobile-open');
+    });
+  });
+}
+
+/* ================================================================
+   APPLY i18n — Update all data-i18n elements to current language
+   ================================================================ */
+function applyI18n() {
+  const lang = i18n[uiLang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (lang[key]) {
+      el.innerHTML = lang[key];
+    }
+  });
+
+  // Update hero elements
+  const heroDesc = document.getElementById('heroDesc');
+  const heroCta = document.getElementById('heroCta');
+  const heroCtaSec = document.getElementById('heroCtaSec');
+  if (heroDesc) heroDesc.textContent = i18n[uiLang]['heroDesc'];
+  if (heroCta) heroCta.textContent = i18n[uiLang]['heroCta'];
+  if (heroCtaSec) heroCtaSec.textContent = i18n[uiLang]['heroCtaSec'];
+}
+</script>
+
+</body>
+</html>
