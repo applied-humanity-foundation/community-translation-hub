@@ -1,0 +1,24 @@
+name: Validate Translations
+
+on:
+  push:
+    paths:
+      - 'content/**'
+  pull_request:
+    paths:
+      - 'content/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Validate translation completeness
+        run: npx ts-node scripts/validate-translations.ts
+      - name: Run content validation tests
+        run: npm test -- tests/translation-completeness.test.ts tests/content-validation.test.ts
